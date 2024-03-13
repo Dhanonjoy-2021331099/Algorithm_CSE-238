@@ -32,8 +32,8 @@ int main()
     }
 
 
-    cout << "Minimum cost/multiplication = " << m[1][n-1] <<endl;
-    cout<< "K = " << s[1][n-1] <<endl;
+    cout << "Minimum cost/multiplication = " << m[1][n-1] <<endl;    /// 158
+    cout<< "K = " << s[1][n-1] <<endl;     /// 3
 
     return 0;
 }
