@@ -5,10 +5,17 @@ using namespace std;
 
 int main()
 {
-    int n=7;
-    int p[] = {30,20,15,5,10,5,10};
-    int m[7][7] = {0};
-    int s[7][7] = {0};
+    int n;
+    cout<< "Enter Number of Dimension: ";
+    cin >> n;
+
+    cout << "Enter dimension: ";
+    int p[n] ;
+    for(int i=0;i<n;i++)
+    cin >> p[i];
+
+    int m[n][n] = {0};
+    int s[n][n] = {0};
     
     int j,q,min;
 
@@ -30,7 +37,26 @@ int main()
            m[i][j] = min;
         }      
     }
+    // Matrix Print
+    cout<< "M matrix: "<<endl;
+    for (int i = 1; i < n; i++)
+    {
+        for (int j =i; j < n; j++)
+        {
+           cout<<m[i][j]<<" ";
+        }
+        cout<<endl;      
+    }
 
+    cout << "S matrix : "<<endl;
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = i; j < n; j++)
+        {
+           cout<<s[i][j]<<" ";
+        }
+        cout<<endl;       
+    }
 
     cout << "Minimum cost/multiplication = " << m[1][n-1] <<endl;
     cout<< "K = " << s[1][n-1] <<endl;
