@@ -3,7 +3,7 @@ using namespace std;
 
 int lcs(string A, string B, int i,int j){
     if(i==0 || j==0)
-    return 0;fctt                                   
+    return 0;                                  
     else if(A[i-1] == B[j-1])
     return 1+lcs(A,B,i-1,j-1);
     else
