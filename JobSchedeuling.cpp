@@ -1,82 +1,69 @@
-#include <bits/stdc++.h>
+// Job Sequencing problem
 
+#include <bits/stdc++.h>
 using namespace std;
 
-struct Job
-{
-    char id;
-    int deadLine;
-    int profit;
-};
+int main() {
+    int n;
+    cout << "Enter number of Jobs: ";
+    cin >> n;
 
-bool comp(Job j1, Job j2)
-{
-    return (j1.profit > j2.profit); // compare jobs based on profit
-}
+    // Dynamic arrays for jobs, deadlines, and profits
+    int job[n];
+    int dedline[n];
+    int profit[n];
 
-int min(int a, int b)
-{
-    return (a < b) ? a : b;
-}
+    // Input job details
+    for (int i = 0; i < n; i++) {
+        cout << "Enter Job ID, Deadline, and Profit for Job " << i + 1 << ": ";
+        cin >> job[i] >> dedline[i] >> profit[i];
+    }
 
-int main()
-{
-    Job jobs[] = {{'a', 9, 15},
-                  {'b', 2, 2},
-                  {'c', 5, 18},
-                  {'d', 7, 1},
-                  {'e', 4, 25},
-                  {'f', 2, 20},
-                  {'g', 5, 8},
-                  {'h', 7, 10},
-                  {'i', 4, 12},
-                  {'j', 3, 5}
+    double total = 0;
 
-    };
-    int n = 10;
-    cout << "Following is maximum profit sequence of Jobs: "
-         << "\n";
-
-    sort(jobs, jobs + n, comp); // sort jobs on profit
-
-    int jobSeq[n]; // To store result (Sequence of jobs)
-
-    bool slot[n]; // To keep track of free time slots
-
-    for (int i = 0; i < n; i++)
-        slot[i] = false; // initially all slots are free
-    for (int i = 0; i < n; i++)
-    { // for all given jobs
-        for (int j = min(n, jobs[i].deadLine) - 1; j >= 0; j--)
-        { // search from last free slot
-            if (slot[j] == false)
-            {
-                jobSeq[j] = i;  // Add this job to job sequence
-                slot[j] = true; // mark this slot as occupied
-                break;
+    // Sort by profit
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (profit[i] < profit[j]) {
+                swap(profit[i], profit[j]);
+                swap(dedline[i], dedline[j]);
+                swap(job[i], job[j]);
             }
         }
     }
 
-    for (int i = 0; i < n; i++)
-        if (slot[i])
-        {
-            cout << jobs[jobSeq[i]].id << " "; // display the sequence
+    // Find maximum deadline
+    int maxDeadline = dedline[0];
+    for (int i = 1; i < n; i++) {
+        if (dedline[i] > maxDeadline) {
+            maxDeadline = dedline[i];
         }
-
-    cout << endl;
-    for (int i = 0; i < n; i++)
-    {
-        if (slot[i])
-            cout << jobs[jobSeq[i]].profit << " ";
     }
 
-    int sum = 0;
-    for (int i = 0; i < n; i++)
-        if (slot[i])
-            sum += jobs[jobSeq[i]].profit;
-    cout << endl
-         << " Total profit : " << sum;
+    // Result array creation
+    int result[maxDeadline];
+    for (int i = 0; i < maxDeadline; i++) {
+        result[i] = 0;
+    }
+
+    // Job scheduling
+    for (int i = 0; i < n; i++) {
+        // Try to find a free slot for this job
+        for (int j = min(maxDeadline, dedline[i]) - 1; j >= 0; j--) {
+            if (result[j] == 0) {
+                result[j] = job[i];
+                total += profit[i];
+                break; // Stop after placing the job
+            }
+        }
+    }
+
+    cout << "Total Profit: " << total << endl;
+    cout << "Scheduled Jobs: ";
+    for (int i = 0; i < maxDeadline; i++) {
+        cout << result[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
