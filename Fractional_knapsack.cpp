@@ -1,61 +1,51 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
 using namespace std;
 
-//first is profit second is weight
-typedef pair<double, double> item;
+int main() {
+    int n, capacity;
+    cin >> n >> capacity;
 
-//return if first item has greater value by weight ratio than the 
-bool comp_item(item& a, item& b)
-{
-    return a.first/a.second > b.first/b.second;
-}
+    double ratio[n];
+    double profit[n];
+    double weight[n];
+    double total = 0;
 
-double fractional_knapsack(item items[], int n, double capacity)
-{
-    double profit= 0;
+    // Input profit and weight for each item
+    for (int i = 0; i < n; i++) {
+        cout << "Enter profit and weight for item " << i + 1 << ": ";
+        cin >> profit[i] >> weight[i];
+        ratio[i] = profit[i] / weight[i]; // Calculate ratio for each item
+    }
 
-    //sort items by their value/weight ratio in decreasing order
-    sort(items, items+n, comp_item);
-    
-    for(int i= 0; i<n; i++)
-    {
-        if(items[i].second <= capacity)
-        {
-            capacity -= items[i].second;
-            profit += items[i].first;
-        }
-        else
-        {
-            profit += items[i].first/items[i].second * capacity;
-            capacity= 0;
-            break;
+    // Ratio print
+    cout << "Value-to-weight ratios:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << ratio[i] << endl;
+    }
+
+    // Sort
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (ratio[i] < ratio[j]) {   // Compare ratio[i] and ratio[j]
+                swap(ratio[i], ratio[j]);
+                swap(weight[i], weight[j]);
+                swap(profit[i], profit[j]);
+            }
         }
     }
-    
-    return profit;
-}
 
-int main(void)
-{
-    
-    int n;
-    item items[100];
-    double capacity;
-
-    cout<<"Enter the number of items\n";
-    cin>>n;
-
-    cout<<"Enter the total capacity of knapsack\n";
-    cin>>capacity;
-
-    cout<<"Enter the profit and weight for "<< n <<" items\n";
-    for(int i= 0; i<n; i++)
-    {
-        cin>>items[i].first>>items[i].second;
+    // Total value calculation
+    for (int i = 0; i < n; i++) {
+        if (weight[i] > capacity) {
+            total += ratio[i] * capacity; // Calculate the fraction
+            break; // Exit if the item is too heavy
+        } else {
+            total += profit[i];
+            capacity -= weight[i];
+        }
     }
-    
-    cout<< "The maximum profit is = "<< fractional_knapsack(items, n, capacity) <<endl;
-    
+
+    cout << "Maximum value in the knapsack: " << total << endl;
+
     return 0;
 }
