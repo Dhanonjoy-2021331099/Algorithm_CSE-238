@@ -61,9 +61,13 @@ int main() {
     cout << "Total Profit: " << total << endl;
     cout << "Scheduled Jobs: ";
     for (int i = 0; i < maxDeadline; i++) {
-        cout << result[i] << " ";
+        if (result[i] != 0) {
+            cout << result[i] << " ";
+        }
     }
     cout << endl;
 
     return 0;
 }
+
+// overall Time Complexity : O(n^2)
